@@ -1,0 +1,404 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* purchase_request
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-07 07:24+0000\n"
+"PO-Revision-Date: 2016-01-07 08:55+0100\n"
+"Last-Translator: Jaume Planas <jaume.planas@minorisa.net>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: Spanish\n"
+
+#: model:email.template,body_html:purchase_request.purchase_request_template
+#. module: purchase_request
+msgid ""
+"\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"\n"
+"    <p>Hello ${object.validator.name},</p>\n"
+"    \n"
+"    <p>This is a Purchase Request from ${object.employee.name}: </p>\n"
+"\n"
+"    <p style=\"border-left: 1px solid #8e0000; margin-left: 30px;\">\n"
+"       &nbsp;&nbsp;<strong>REFERENCES</strong><br />\n"
+"       &nbsp;&nbsp;Purchase Request number: <a href=\"#model=purchase."
+"request&amp;id=${object.id}\"><strong>${object.name}</strong></a><br />\n"
+"       &nbsp;&nbsp;Purchase Request total: <strong>${object.amount_total} "
+"${object.currency_id.name}</strong><br />\n"
+"       &nbsp;&nbsp;Purchase Request date:  ${format_tz(object.date_request, "
+"tz=user.tz, context={'lang':object.validator.lang})} <br />\n"
+"       &nbsp;&nbsp;Supplier: ${object.supplier.name}<br />\n"
+"       &nbsp;&nbsp;Description: ${object.description}<br />\n"
+"       &nbsp;&nbsp;Request Type: ${object.request_type.name}</a>\n"
+"    </p>\n"
+"</div>\n"
+"            "
+msgstr "\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"\n"
+"    <p>Hola ${object.validator.name},</p>\n"
+"    \n"
+"    <p>Esta es una Petición de Compra de ${object.employee.name}: </p>\n"
+"\n"
+"    <p style=\"border-left: 1px solid #8e0000; margin-left: 30px;\">\n"
+"       &nbsp;&nbsp;<strong>REFERENCIAS</strong><br />\n"
+"       &nbsp;&nbsp;Número de Petición de Compra: <a href=\"#model=purchase."
+"request&amp;id=${object.id}\"><strong>${object.name}</strong></a><br />\n"
+"       &nbsp;&nbsp;Total de la petición de compra: <strong>${object."
+"amount_total} ${object.currency_id.name}</strong><br />\n"
+"       &nbsp;&nbsp;Fecha de la petición de compra:  ${format_tz(object."
+"date_request, tz=user.tz, context={'lang':object.validator.lang})} <br />\n"
+"       &nbsp;&nbsp;Proveedor: ${object.supplier.name}<br />\n"
+"       &nbsp;&nbsp;Descripción: ${object.description}<br />\n"
+"       &nbsp;&nbsp;Tipo de petición: ${object.request_type.name}</a>\n"
+"    </p>\n"
+"</div>\n"
+"            "
+
+#: model:email.template,subject:purchase_request.purchase_request_template
+#. module: purchase_request
+msgid ""
+"${object.employee.name|safe} Purchase Request (Ref ${object.name or 'n/a' })"
+msgstr "${object.employee.name|safe} Petición de Compra (Ref. ${object.name or 'n/"
+"a' })"
+
+#: model:ir.actions.act_window,help:purchase_request.purchase_request_form_action
+#. module: purchase_request
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"\t\t\t\t\tClick to create a purchase request that will be sent for\n"
+"\t\t\t\t\tits approval.\n"
+"\t\t\t\t</p>\n"
+"\t\t\t"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"Pulse para crear una petición de compra para su posterior "
+"aprobación.\n"
+"</p>\n"
+
+#: model:ir.actions.act_window,help:purchase_request.purchase_request_type_form_action
+#. module: purchase_request
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"\t\t\t\t\tClick to create a purchase request type that will be used to "
+"categorize purchase requests.\n"
+"\t\t\t\t</p>\n"
+"\t\t\t"
+msgstr "<p class=\"oe_view_nocontent_create\">\n"
+"Pulse aquí para crear un tipo de petición de compra para crear "
+"categorías de peticiones de compras.\n"
+"</p>\n"
+
+#: selection:purchase.request,state:0
+#. module: purchase_request
+msgid "Approval Pending"
+msgstr "Aprobación pendiente"
+
+#: view:purchase.request:purchase_request.purchase_request_form2
+#. module: purchase_request
+msgid "Approve Request"
+msgstr "Aprobar petición"
+
+#: selection:purchase.request,state:0
+#. module: purchase_request
+msgid "Approved"
+msgstr "Aprobada"
+
+#: field:purchase.order,purchase_request_id:0
+#. module: purchase_request
+msgid "Associated Purchase Request"
+msgstr "Petición de compra asociada"
+
+#: view:purchase.request:purchase_request.purchase_request_form2
+#. module: purchase_request
+msgid "Create PO"
+msgstr "Crear Orden de Compra"
+
+#: field:purchase.request,create_uid:0
+#: field:purchase.request.line,create_uid:0
+#: field:purchase.request.type,create_uid:0
+#. module: purchase_request
+msgid "Created by"
+msgstr "Creado por"
+
+#: field:purchase.request,create_date:0
+#: field:purchase.request.line,create_date:0
+#: field:purchase.request.type,create_date:0
+#. module: purchase_request
+msgid "Created on"
+msgstr "Fecha de creación"
+
+#: field:purchase.request,currency_id:0
+#. module: purchase_request
+msgid "Currency"
+msgstr "Moneda"
+
+#: help:purchase.request,message_last_post:0
+#. module: purchase_request
+msgid "Date of the last message posted on the record."
+msgstr "Fecha del último mensaje publicado en el registro."
+
+#: selection:purchase.request,state:0
+#. module: purchase_request
+msgid "Denied"
+msgstr "Denegada"
+
+#: view:purchase.request:purchase_request.purchase_request_form2
+#. module: purchase_request
+msgid "Deny Request"
+msgstr "Denegar petición"
+
+#: field:purchase.request,description:0
+#: field:purchase.request.line,description:0
+#. module: purchase_request
+msgid "Description"
+msgstr "Descripción"
+
+#: selection:purchase.request,state:0
+#. module: purchase_request
+msgid "Draft"
+msgstr "Borrador"
+
+#: model:ir.model,name:purchase_request.model_purchase_request
+#. module: purchase_request
+msgid "Email Thread"
+msgstr "Hilo de correos electrónicos"
+
+#: model:ir.model,name:purchase_request.model_mail_compose_message
+#. module: purchase_request
+msgid "Email composition wizard"
+msgstr "Asistente de composición de correo electrónico"
+
+#: field:purchase.request,message_follower_ids:0
+#. module: purchase_request
+msgid "Followers"
+msgstr "Seguidores"
+
+#: help:purchase.request,message_summary:0
+#. module: purchase_request
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+msgstr "Contiene el rresumen de Chatter (número de mensajes, ...). Este resumen está "
+"en formato HTML directo para poderse insertar en vistas Kanban."
+
+#: field:purchase.request,id:0
+#: field:purchase.request.line,id:0
+#: field:purchase.request.type,id:0
+#. module: purchase_request
+msgid "ID"
+msgstr "ID"
+
+#: help:purchase.request,message_unread:0
+#. module: purchase_request
+msgid "If checked new messages require your attention."
+msgstr "Si se marca, los nuevos mensajes requerirán su atención."
+
+#: field:purchase.request,is_employee:0
+#. module: purchase_request
+msgid "Is Employee Responsible"
+msgstr "Es responsable del empleado"
+
+#: field:purchase.request,is_validator:0
+#. module: purchase_request
+msgid "Is Validator Responsible"
+msgstr "Es responsable de la validación"
+
+#: field:purchase.request,message_is_follower:0
+#. module: purchase_request
+msgid "Is a Follower"
+msgstr "Es un seguidor"
+
+#: field:purchase.request,message_last_post:0
+#. module: purchase_request
+msgid "Last Message Date"
+msgstr "Fecha del último mensaje"
+
+#: field:purchase.request,write_uid:0
+#: field:purchase.request.line,write_uid:0
+#: field:purchase.request.type,write_uid:0
+#. module: purchase_request
+msgid "Last Updated by"
+msgstr "Última actualización realizada por"
+
+#: field:purchase.request,write_date:0
+#: field:purchase.request.line,write_date:0
+#: field:purchase.request.type,write_date:0
+#. module: purchase_request
+msgid "Last Updated on"
+msgstr "Fecha de la última actualización"
+
+#: field:purchase.request,message_ids:0
+#. module: purchase_request
+msgid "Messages"
+msgstr "Mensajes"
+
+#: help:purchase.request,message_ids:0
+#. module: purchase_request
+msgid "Messages and communication history"
+msgstr "Historial de mensajes y comunicaciones"
+
+#: selection:purchase.request,state:0
+#. module: purchase_request
+msgid "PO Created"
+msgstr "Orden de Compra creada"
+
+#: field:purchase.request.line,product_id:0
+#. module: purchase_request
+msgid "Product"
+msgstr "Producto"
+
+#: field:purchase.request.line,product_uom:0
+#. module: purchase_request
+msgid "Product Unit of Measure"
+msgstr "Unidad de medida del producto"
+
+#: model:ir.model,name:purchase_request.model_purchase_order
+#. module: purchase_request
+msgid "Purchase Order"
+msgstr "Orden de compra"
+
+#: view:purchase.request:purchase_request.purchase_request_form2
+#: field:purchase.request,name:0
+#. module: purchase_request
+msgid "Purchase Request"
+msgstr "Petición de compra"
+
+#: field:purchase.request,request_type:0
+#: view:purchase.request.type:purchase_request.purchase_request_type_form
+#. module: purchase_request
+msgid "Purchase Request Type"
+msgstr "Tipo de petición de compra"
+
+#: model:ir.actions.act_window,name:purchase_request.purchase_request_type_form_action
+#: model:ir.ui.menu,name:purchase_request.menu_purchase_request_type_form_action
+#: view:purchase.request.type:purchase_request.purchase_request_type_tree
+#. module: purchase_request
+msgid "Purchase Request Types"
+msgstr "Tipos de peticiones de compra"
+
+#: model:mail.message.subtype,description:purchase_request.mt_request_sent
+#: model:mail.message.subtype,name:purchase_request.mt_request_sent
+#. module: purchase_request
+msgid "Purchase Request sent"
+msgstr "Petición de compra enviada"
+
+#: model:ir.actions.act_window,name:purchase_request.purchase_request_form_action
+#: model:ir.ui.menu,name:purchase_request.menu_purchase_request_form_action
+#: view:purchase.request:purchase_request.purchase_request_tree
+#. module: purchase_request
+msgid "Purchase Requests"
+msgstr "Peticiones de compra"
+
+#: view:purchase.request:purchase_request.purchase_request_form2
+#. module: purchase_request
+msgid "Purchase Requests Lines"
+msgstr "Líneas de petición de compra"
+
+#: field:purchase.request.line,purchase_request_id:0
+#. module: purchase_request
+msgid "Purchase request id"
+msgstr "ID de petición de compra"
+
+#: field:purchase.request.line,quantity:0
+#. module: purchase_request
+msgid "Quantity"
+msgstr "Cantidad"
+
+#: field:purchase.request,purchase_order_id:0
+#. module: purchase_request
+msgid "Related PO"
+msgstr "Orden de compra relacionada"
+
+#: field:purchase.request,date_request:0
+#. module: purchase_request
+msgid "Request Date"
+msgstr "Fecha de petición"
+
+#: field:purchase.request,purchase_line:0
+#. module: purchase_request
+msgid "Request Lines"
+msgstr "Líneas de la petición"
+
+#: field:purchase.request.type,name:0
+#. module: purchase_request
+msgid "Request Type Name"
+msgstr "Nombre del tipo de petición"
+
+#: field:purchase.request,employee:0
+#. module: purchase_request
+msgid "Requested By"
+msgstr "Solicitada por"
+
+#: view:purchase.request:purchase_request.purchase_request_form2
+#. module: purchase_request
+msgid "Send Request"
+msgstr "Enviar petición"
+
+#: field:purchase.request,state:0
+#: help:purchase.request,state:0
+#. module: purchase_request
+msgid "Status"
+msgstr "Estado"
+
+#: field:purchase.request,message_summary:0
+#. module: purchase_request
+msgid "Summary"
+msgstr "Resumen"
+
+#: help:purchase.request,supplier:0
+#. module: purchase_request
+msgid "Supplier"
+msgstr "Proveedor"
+
+#: field:purchase.request,supplier:0
+#. module: purchase_request
+msgid "Supplier Reference"
+msgstr "Referencia de proveedor"
+
+#: field:purchase.request.line,taxes_id:0
+#. module: purchase_request
+msgid "Taxes"
+msgstr "Impuestos"
+
+#: field:purchase.request,notes:0
+#. module: purchase_request
+msgid "Terms and Conditions"
+msgstr "Términos y Condiciones"
+
+#: view:purchase.request:purchase_request.purchase_request_form2
+#. module: purchase_request
+msgid "Terms and conditions..."
+msgstr "Términos y condiciones..."
+
+#: help:purchase.request,name:0
+#. module: purchase_request
+msgid ""
+"Unique number of the purchase request, computed automatically when the "
+"purchase request is created."
+msgstr "Número único de petición de compra, calculado automáticamente al crearse la "
+"petición de compra."
+
+#: field:purchase.request.line,price_unit:0
+#. module: purchase_request
+msgid "Unit Price"
+msgstr "Precio unitario"
+
+#: field:purchase.request,message_unread:0
+#. module: purchase_request
+msgid "Unread Messages"
+msgstr "Mensajes no leídos"
+
+#: field:purchase.request,validator:0
+#. module: purchase_request
+msgid "Validated by"
+msgstr "Validada por"
+

@@ -1,0 +1,8 @@
+_build/
+.*
+!.gitignore
+!.travis.yml
+!.coveragerc
+*.py[co]
+*~
+

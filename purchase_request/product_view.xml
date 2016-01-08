@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf8"?>
+<openerp>
+	<data>
+		<record id="product_template_only_form_view_inherit_purchase_request"
+			model="ir.ui.view">
+			<field name="name">product.template.product.purchase.request.form
+			</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_only_form_view" />
+			<field name="priority" eval="18" />
+			<field name="arch" type="xml">
+				<field name="default_code" position="after">
+					<field name="account_unitat_negoci_required"></field>
+					<field name="account_analytic_line_required"></field>
+				</field>
+			</field>
+		</record>
+	</data>
+</openerp>

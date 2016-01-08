@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf8"?>
+<openerp>
+	<data>
+		<record id="purchase_request_workflow" model="workflow">
+			<field name="name">purchase.request.workflow</field>
+			<field name="osv">purchase.request</field>
+			<field name="on_create">True</field>
+		</record>
+
+		<record id="activity_draft" model="workflow.activity">
+			<field name="wkf_id" ref="purchase_request_workflow" />
+			<field name="flow_start">True</field>
+			<field name="name">draft</field>
+			<field name="kind">dummy</field>
+		</record>
+		<record id="activity_pending" model="workflow.activity">
+			<field name="wkf_id" ref="purchase_request_workflow" />
+			<field name="name">pending</field>
+			<field name="kind">function</field>
+			<field name="action">write({'state': 'pending'})</field>
+		</record>
+		<record id="activity_approved" model="workflow.activity">
+			<field name="wkf_id" ref="purchase_request_workflow" />
+			<field name="name">approved</field>
+			<field name="kind">function</field>
+			<field name="action">write({'state': 'approved'})</field>
+		</record>
+		<record id="activity_denied" model="workflow.activity">
+			<field name="wkf_id" ref="purchase_request_workflow" />
+			<field name="flow_stop">True</field>
+			<field name="name">denied</field>
+			<field name="kind">function</field>
+			<field name="action">write({'state': 'denied'})</field>
+		</record>
+		<record id="activity_po_created" model="workflow.activity">
+			<field name="wkf_id" ref="purchase_request_workflow" />
+			<field name="flow_stop">True</field>
+			<field name="name">po_created</field>
+			<field name="kind">function</field>
+			<field name="action">write({'state': 'po_created'})</field>
+		</record>
+
+		<record id="trans_draft_pending" model="workflow.transition">
+			<field name="act_from" ref="activity_draft" />
+			<field name="act_to" ref="activity_pending" />
+			<field name="signal">send</field>
+		</record>
+		<record id="trans_pending_approved" model="workflow.transition">
+			<field name="act_from" ref="activity_pending" />
+			<field name="act_to" ref="activity_approved" />
+			<field name="signal">approve</field>
+		</record>
+		<record id="trans_pending_denied" model="workflow.transition">
+			<field name="act_from" ref="activity_pending" />
+			<field name="act_to" ref="activity_denied" />
+			<field name="signal">deny</field>
+		</record>
+		<record id="trans_approved_po_created" model="workflow.transition">
+			<field name="act_from" ref="activity_approved" />
+			<field name="act_to" ref="activity_po_created" />
+			<field name="signal">create_po</field>
+		</record>
+		<record id="trans_po_created_approved" model="workflow.transition">
+			<field name="act_from" ref="activity_po_created" />
+			<field name="act_to" ref="activity_approved" />
+			<field name="signal">delete_po</field>
+		</record>
+	</data>
+</openerp>

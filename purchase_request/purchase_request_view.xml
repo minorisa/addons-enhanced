@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf8"?>
+<openerp>
+	<data>
+		<record id="purchase_request_form_action" model="ir.actions.act_window">
+			<field name="name">Purchase Requests</field>
+			<field name="res_model">purchase.request</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+Click to create a purchase request that will be sent for its approval.
+				</p>
+			</field>
+		</record>
+
+		<record id="purchase_request_tree" model="ir.ui.view">
+			<field name="name">purchase.request.tree</field>
+			<field name="model">purchase.request</field>
+			<field name="arch" type="xml">
+				<tree string="Purchase Requests">
+					<field name="name" />
+					<field name="employee"></field>
+					<field name="date_request"></field>
+					<field name="description"></field>
+					<field name="amount_total" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="purchase_request_form" model="ir.ui.view">
+			<field name="name">purchase.request2.form</field>
+			<field name="model">purchase.request</field>
+			<field name="arch" type="xml">
+				<form string="Purchase Request">
+					<header>
+						<button name="button_send" type="object" 
+							attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('is_employee', '=', False)]}"
+							string="Send Request" class="oe_highlight" />
+						<button name="approve"
+							attrs="{'invisible': ['|', ('state', '!=', 'pending'), ('is_validator', '=', False)]}"
+							string="Approve Request" class="oe_highlight" />
+						<button name="deny"
+							attrs="{'invisible': ['|', ('state', '!=', 'pending'), ('is_validator', '=', False)]}"
+							string="Deny Request" />
+						<button name="button_create_po" type="object"
+							attrs="{'invisible': ['|', ('state', '!=', 'approved'), ('is_validator', '=', False)]}"
+							string="Create PO" class="oe_highlight" />
+						<field name="state" widget="statusbar"
+							statusbar_visible="draft,pending,approved,denied,po_created"
+							readonly="1" />
+					</header>
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<label string="Purchase Request " />
+								<field name="name" class="oe_inline" readonly="1" />
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="is_employee" invisible="1"></field>
+								<field name="is_validator" invisible="1"></field>
+								<field name="supplier" domain="[('supplier', '=', 'True)]" />
+								<field name="description"></field>
+								<field name="currency_id" />
+							</group>
+							<group>
+								<field name="date_request" widget="date" />
+								<field name="employee"></field>
+								<field name="validator"></field>
+								<field name="request_type"></field>
+								<field name="purchase_order_id"></field>
+							</group>
+						</group>
+						<field name="purchase_line">
+							<tree string="Purchase Requests Lines" editable="bottom">
+								<field name="product_id" />
+								<field name="description" />
+								<field name="quantity" />
+								<field name="product_uom" />
+								<field name="price_unit" />
+								<field name="taxes_id" widget="many2many_tags"
+									domain="[('parent_id','=',False),('type_tax_use','!=','sale')]" />
+								<field name="price_subtotal" />
+							</tree>
+						</field>
+						<group class="oe_subtotal_footer oe_right">
+							<field name="amount_untaxed" widget="monetary"
+								options="{'currency_field': 'currency_id'}" />
+							<field name="amount_tax" widget="monetary"
+								options="{'currency_field': 'currency_id'}" />
+							<div class="oe_subtotal_footer_separator oe_inline">
+								<label for="amount_total" />
+							</div>
+							<field name="amount_total" nolabel="1"
+								class="oe_subtotal_footer_separator" widget="monetary"
+								options="{'currency_field': 'currency_id'}" />
+						</group>
+						<div class="oe_clear" />
+						<field name="notes" class="oe_inline" placeholder="Terms and conditions..." />
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"
+							groups="base.group_user" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<menuitem action="purchase_request_form_action" id="menu_purchase_request_form_action"
+			parent="purchase.menu_procurement_management" sequence="10" />
+	</data>
+</openerp>

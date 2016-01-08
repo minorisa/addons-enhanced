@@ -1,0 +1,83 @@
+-
+  Test of Purchase Request model and full workflow cycle.
+-
+  Create a new Purchase Request Type
+-
+  !record {model: purchase.request.type, id: purchase_request_type_test}:
+    name: 'Test Type'
+-
+  Create a new PR
+-
+  !record {model: purchase.request, id: purchase_request_test}:
+    supplier: base.res_partner_18
+    description: 'Description'
+    employee: 1
+    validator: 1
+    request_type: purchase_request_type_test
+-
+  Check if name is assigned by sequence
+-
+  !assert {model: purchase.request, id: purchase_request_test, string: Name is not properly assigned by sequence}:
+    - name != '/'
+-
+  Create a couple of purchase request lines
+-
+  !record {model: purchase.request.line, id: purchase_request_line_1}:
+    purchase_request_id: purchase_request_test
+    quantity: 10
+    price_unit: 10
+-
+  !record {model: purchase.request.line, id: purchase_request_line_2}:
+    purchase_request_id: purchase_request_test
+    quantity: 20
+    price_unit: 5
+-
+  Check if sum calculations are correctly computed
+-
+  !assert {model: purchase.request.line, id: purchase_request_line_1, string: Price subtotal incorrect}:
+    - price_subtotal == 100.0
+-
+  !assert {model: purchase.request, id: purchase_request_test, string: Amount total incorrect}:
+    - amount_total == 200.0
+-
+  Send purchase_request and check if state is correct
+-
+  !context
+    default_composition_mode: 'comment'
+    default_use_template: False
+    default_model: 'purchase.request'
+    mark_so_as_sent: True
+-
+  !python {model: mail.compose.message}: |
+    m = self.pool.get('mail.compose.message')
+    context['default_res_id'] = ref('purchase_request_test')
+    idmid = m.create(cr, uid, {
+      'subject': 'Hola',
+      'body': 'Hola',
+      }, context=context)
+    idm = m.browse(cr, uid, [idmid], context=context)
+    idm.send_mail()
+- 
+  !assert {model: purchase.request, id: purchase_request_test, string: State is not pending}:
+    - state == 'pending'
+-
+  Approve request
+-
+  !workflow {model: purchase.request, ref: purchase_request_test, action: approve}
+-
+  !assert {model: purchase.request, id: purchase_request_test, string: State is not approved}:
+    - state == 'approved'
+-
+  Create PO
+-
+  !python {model: purchase.request}: |
+    pro = self.pool.get('purchase.request')
+    pr = pro.browse(cr, uid, [ref('purchase_request_test')])
+    podict = pr.button_create_po()
+    poid = podict.get('res_id', False)
+    assert poid != False, "Purchase Order should be created"
+    assert pr.state == 'po_created', "Purchase Request state should be 'po_created'"
+    poo = self.pool.get('purchase.order')
+    po = poo.browse(cr, uid, [poid])
+    po.unlink()
+    assert pr.state == 'approved', "Purchase Request state should be 'approved'"
