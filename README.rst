@@ -9,6 +9,23 @@
    :target: https://coveralls.io/github/minorisa/addons-enhanced?branch=8.0
 
 
+Minorisa Enhanced Addons
+========================
+
+This repository includes the following public (AGPL) & generic addons for Odoo:
+
+.. table:: Enhanced Addons
+   :class: table table-condensed
+   
+   ========================= ============================================= 
+   Addon                     Description
+   ------------------------- ---------------------------------------------
+   purchase_request          This module is designed to manage equipment o
+                             services purchase requests, subject to 
+                             acceptance by a department leader.
+   ========================= =============================================
+   
+
 Credits
 -------
 
