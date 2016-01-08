@@ -2,7 +2,7 @@
 
 [report]
 include =
-    */minorisa/purchase_request/*
+    */minorisa/addons-enhanced/*
 omit =
     */scenario/*
     */scenarios/*
