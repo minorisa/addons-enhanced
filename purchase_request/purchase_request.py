@@ -20,11 +20,12 @@
 #
 ##############################################################################
 
-from openerp import models, fields, api, _
-from openerp.exceptions import ValidationError
-import openerp.addons.decimal_precision as dp
-
 import logging
+
+from openerp import models, fields, api, _
+import openerp.addons.decimal_precision as dp
+from openerp.exceptions import ValidationError
+
 
 _logger = logging.getLogger(__name__)
 
