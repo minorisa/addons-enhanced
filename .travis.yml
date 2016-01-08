@@ -11,6 +11,9 @@ addons:
   apt:
     packages:
       - python-lxml
+      - python-simplejson
+      - python-serial
+      - python-yaml
 
 virtualenv:
   system_site_packages: true
@@ -19,6 +22,7 @@ install:
   - git clone https://github.com/amdeb/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
+  - pip install unicodecsv unidecode ofxparse
 
 script:
   - travis_run_tests
