@@ -24,12 +24,16 @@ from openerp.tests.common import TransactionCase
 
 
 class TestPurchaseRequest(TransactionCase):
-    """Tests cases for Purchase Request module"""
 
     def test_purchase_request_type(self):
+        """ Testing Purchase Request Type creation... """
         prtobj = self.registry('purchase.request.type')
         prt = prtobj.create(self.cr, self.uid,
                             {'name': 'Test Purchase Request Type'})
         self.assertIsNotNone(
             prt,
-            'Purchase Request Type should has not been created.')
+            'Purchase Request Type has not been created.')
+
+    def test_purchase_request(self):
+        pass
+    

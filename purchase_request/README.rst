@@ -1,11 +1,5 @@
-.. image:: https://img.shields.io/badge/licence-AGPL--3-red.svg
+.. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
    :alt: AGPL License log
-
-.. image:: https://travis-ci.org/minorisa/purchase_request.svg?branch=8.0
-   :target: https://travis-ci.org/minorisa/purchase_request.svg?branch=8.0
-
-.. image:: https://coveralls.io/repos/minorisa/purchase_request/badge.svg?branch=8.0&service=github 
-   :target: https://coveralls.io/github/minorisa/purchase_request?branch=8.0
 
 
 Purchase Request
