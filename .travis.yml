@@ -10,6 +10,7 @@ env:
 addons:
   apt:
     packages:
+      - expect-dev
       - python-lxml
       - python-simplejson
       - python-serial
