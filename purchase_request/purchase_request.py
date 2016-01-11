@@ -94,7 +94,7 @@ class PurchaseRequest(models.Model):
     supplier = fields.Many2one(
         'res.partner',
         string="Supplier Reference", copy=True,
-        help="Supplier", states=READONLY_STATES)
+        help="Supplier", states=READONLY_STATES, required=True)
     description = fields.Char(string="Description", states=READONLY_STATES)
     date_request = fields.Datetime(string="Request Date", required=True,
                                    copy=True, default=fields.Datetime.now(),
