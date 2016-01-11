@@ -291,14 +291,15 @@ class PurchaseRequestLine(models.Model):
             return False
 
     purchase_request_id = fields.Many2one('purchase.request')
-    product_id = fields.Many2one('product.product', string="Product")
+    product_id = fields.Many2one('product.product',
+                                 string="Product", required=True)
     taxes_id = fields.Many2many('account.tax',
                                 'purchase_request_taxe',
                                 'ord_id', 'tax_id', string="Taxes")
     product_uom = fields.Many2one('product.uom',
                                   string="Product Unit of Measure",
                                   required=True, default=_get_uom_id)
-    description = fields.Char(string="Description")
+    description = fields.Char(string="Description", required=True)
     currency_id = fields.Many2one('res.currency',
                                   string="Currency",
                                   related='purchase_request_id.currency_id')
