@@ -68,8 +68,10 @@ class TestPurchaseRequest(TransactionCase):
         # Create a couple of Purchase Request Lines
         line_vals = {
             'purchase_request_id': pr.id,
+            'product_id': self.ref('product.product_product_18'),
             'quantity': 10,
             'price_unit': 10.0,
+            'description': 'Test Product',
         }
         idprl1 = prlobj.create(cr, uid, line_vals)
         prl1 = prlobj.browse(cr, uid, [idprl1])
