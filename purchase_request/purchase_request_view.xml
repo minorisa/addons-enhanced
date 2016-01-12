@@ -28,7 +28,7 @@ Click to create a purchase request that will be sent for its approval.
 		</record>
 
 		<record id="purchase_request_form" model="ir.ui.view">
-			<field name="name">purchase.request2.form</field>
+			<field name="name">purchase.request.form</field>
 			<field name="model">purchase.request</field>
 			<field name="arch" type="xml">
 				<form string="Purchase Request">
