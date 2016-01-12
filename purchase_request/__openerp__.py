@@ -41,9 +41,7 @@
         'purchase_request_type_view.xml',
         ],
     "init_xml": [],
-    "test": [
-        'test/purchase_request.yml',
-        ],
+    "test": [],
     "demo_xml": [],
     "installable": True,
     "active": False,
