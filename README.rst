@@ -5,7 +5,7 @@
    :target: https://travis-ci.org/minorisa/addons-enhanced
     
     
-.. image:: https://coveralls.io/repos/minorisa/addons-enhanced/badge.svg?branch=9.0&service=github 
+.. image:: https://coveralls.io/repos/minorisa/addons-enhanced/badge.svg?branch=8.0&service=github 
    :target: https://coveralls.io/github/minorisa/addons-enhanced?branch=8.0
 
 
