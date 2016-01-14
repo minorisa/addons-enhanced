@@ -51,11 +51,12 @@ class TestPurchaseRequest(TransactionCase):
 
         # Create Purchase Request
         vals = {
-            'product_id': self.ref('base.res_partner_18'),
+            'partner_id': self.ref('base.res_partner_18'),
             'description': 'Test Description',
             'employee_id': admin.id,
             'validator_id': admin.id,
             'request_type': idprt,
+            'fiscal_position_id': False,
         }
         idpr = probj.create(cr, uid, vals)
         pr = probj.browse(cr, uid, [idpr])
@@ -70,6 +71,8 @@ class TestPurchaseRequest(TransactionCase):
             'purchase_request_id': pr.id,
             'product_qty': 10,
             'price_unit': 10.0,
+            'product_uom': self.ref('product.product_uom_unit'),
+            'product_id': self.ref('product.product_product_0'),
         }
         idprl1 = prlobj.create(cr, uid, line_vals)
         prl1 = prlobj.browse(cr, uid, [idprl1])

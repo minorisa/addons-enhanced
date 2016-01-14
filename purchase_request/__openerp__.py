@@ -32,6 +32,7 @@
         'purchase',
         ],
     'data': [
+        'security/ir.model.access.csv',
         'purchase_request_wkf.xml',
         'purchase_request_sequence.xml',
         'purchase_request_view.xml',

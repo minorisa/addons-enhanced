@@ -227,7 +227,6 @@ class PurchaseRequest(models.Model):
             'validator': self.validator_id.id,
             'notes': self.notes,
             'fiscal_position': self.fiscal_position_id.id or False,
-            'dest_address_id': self.partner_id.id,
         }
         return po_vals
 
