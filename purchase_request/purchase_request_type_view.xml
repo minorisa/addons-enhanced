@@ -34,6 +34,6 @@ Click to create a purchase request type that will be used to categorize purchase
 		</record>
 
 		<menuitem action="purchase_request_type_form_action" id="menu_purchase_request_type_form_action"
-			parent="purchase.menu_purchase_config_purchase" sequence="20" />
+			parent="purchase.menu_purchase_config" sequence="20" />
 	</data>
 </openerp>

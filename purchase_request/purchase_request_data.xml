@@ -9,33 +9,29 @@
 			<field name="description">Purchase Request sent</field>
 		</record>
         <!--Email template -->
-        <record id="purchase_request_template" model="email.template">
+        <record id="purchase_request_template" model="mail.template">
             <field name="name">Purchase Request - Send by Email</field>
-            <field name="email_from">${(object.employee.email or '')|safe}</field>
-            <field name="subject">${object.employee.name|safe} Purchase Request (Ref ${object.name or 'n/a' })</field>
-            <field name="partner_to">${object.validator.id}</field>
-            <field name="model_id" ref="purchase_request.model_purchase_request"/>
+            <field name="email_from">${(object.employee_id.email or '')|safe}</field>
+            <field name="subject">${object.employee_id.name|safe} Purchase Request (Ref ${object.name or 'n/a' })</field>
+            <field name="partner_to">${object.validator_id.id}</field>
+            <field name="model_id" ref="model_purchase_request"/>
             <field name="auto_delete" eval="True"/>
-            <!-- 
-            <field name="report_template" ref="report_sale_order"/>
-            <field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field>
-             -->
-            <field name="lang">${object.validator.lang}</field>
+            <field name="lang">${object.validator_id.lang}</field>
             <field name="body_html"><![CDATA[
 <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
 
-    <p>Hello ${object.validator.name},</p>
+    <p>Hello ${object.validator_id.name},</p>
     
-    <p>This is a Purchase Request from ${object.employee.name}: </p>
+    <p>This is a Purchase Request from ${object.employee_id.name}: </p>
 
     <p style="border-left: 1px solid #8e0000; margin-left: 30px;">
-       &nbsp;&nbsp;<strong>REFERENCES</strong><br />
-       &nbsp;&nbsp;Purchase Request number: <a href="#model=purchase.request&amp;id=${object.id}"><strong>${object.name}</strong></a><br />
-       &nbsp;&nbsp;Purchase Request total: <strong>${object.amount_total} ${object.currency_id.name}</strong><br />
-       &nbsp;&nbsp;Purchase Request date:  ${format_tz(object.date_request, tz=user.tz, context={'lang':object.validator.lang})} <br />
-       &nbsp;&nbsp;Supplier: ${object.supplier.name}<br />
-       &nbsp;&nbsp;Description: ${object.description}<br />
-       &nbsp;&nbsp;Request Type: ${object.request_type.name}</a>
+       <strong>REFERENCES</strong><br />
+       Purchase Request number: <a href='#model=purchase.request&amp;id=${object.id}'><strong>${object.name}</strong></a><br />
+       Purchase Request total: <strong>${object.amount_total} ${object.currency_id.name}</strong><br />
+       Purchase Request date:  ${format_tz(object.date_request, tz=user.tz, context={'lang':object.validator_id.lang})} <br />
+       Supplier: ${object.partner_id.name}<br />
+       Description: ${object.description}<br />
+       Request Type: ${object.request_type.name}</a>
     </p>
 </div>
             ]]></field>

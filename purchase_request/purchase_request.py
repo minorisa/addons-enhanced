@@ -56,34 +56,28 @@ class PurchaseRequest(models.Model):
         },
     }
 
-    @api.depends('purchase_line')
+    @api.depends('purchase_line.price_total')
     def _amount_all(self):
-        company_id = self.env.user.company_id
-        partner_id = company_id.partner_id
-        currency = partner_id.property_product_pricelist_purchase.currency_id
-        for p in self:
-            val = val1 = 0.0
-            for line in p.purchase_line:
-                val1 += line.price_subtotal
-                for c in line.taxes_id.compute_all(
-                        line.price_unit,
-                        line.quantity,
-                        line.product_id,
-                        self.env.user.company_id.partner_id)['taxes']:
-                    val += c.get('amount', 0.0)
-            p.amount_tax = currency.round(val)
-            p.amount_untaxed = currency.round(val1)
-            p.amount_total = p.amount_untaxed + p.amount_tax
+        for request in self:
+            amount_untaxed = amount_tax = 0.0
+            for line in request.purchase_line:
+                amount_untaxed += line.price_subtotal
+                amount_tax += line.price_tax
+            request.update({
+                'amount_untaxed': request.currency_id.round(amount_untaxed),
+                'amount_tax': request.currency_id.round(amount_tax),
+                'amount_total': amount_untaxed + amount_tax,
+            })
 
-    @api.depends('employee')
+    @api.depends('employee_id')
     def _is_employee(self):
         for e in self:
-            e.is_employee = e.employee == self.env.user
+            e.is_employee = e.employee_id == self.env.user
 
-    @api.depends('validator')
+    @api.depends('validator_id')
     def _is_validator(self):
         for v in self:
-            v.is_validator = v.validator == self.env.user
+            v.is_validator = v.validator_id == self.env.user
 
     name = fields.Char(
         string="Purchase Request",
@@ -91,11 +85,11 @@ class PurchaseRequest(models.Model):
         default=lambda a: '/', states=READONLY_STATES,
         help="Unique number of the purchase request, \
         computed automatically when the purchase request is created.")
-    supplier = fields.Many2one(
+    partner_id = fields.Many2one(
         'res.partner',
         string="Supplier Reference", copy=True,
         help="Supplier", states=READONLY_STATES)
-    description = fields.Char(string="Description", states=READONLY_STATES)
+    description = fields.Char(string="Purchase Description", states=READONLY_STATES)
     date_request = fields.Datetime(string="Request Date", required=True,
                                    copy=True, default=fields.Datetime.now(),
                                    states=READONLY_STATES)
@@ -112,14 +106,14 @@ class PurchaseRequest(models.Model):
         'Request Lines',
         states=READONLY_STATES,
         copy=True)
-    employee = fields.Many2one('res.users',
+    employee_id = fields.Many2one('res.users',
                                string="Requested By",
                                required=True, copy=True,
                                default=lambda s: s.env.user,
                                states=READONLY_STATES)
     is_employee = fields.Boolean(string="Is Employee Responsible",
                                  compute='_is_employee', store=True)
-    validator = fields.Many2one('res.users', string="Validated by", copy=False)
+    validator_id = fields.Many2one('res.users', string="Validated by", copy=False)
     is_validator = fields.Boolean(string="Is Validator Responsible",
                                   compute='_is_validator', store=True)
     notes = fields.Text('Terms and Conditions')
@@ -137,6 +131,20 @@ class PurchaseRequest(models.Model):
     amount_total = fields.Float(compute='_amount_all',
                                 digits_compute=dp.get_precision('Account'),
                                 string="Total")
+    fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', oldname='fiscal_position')
+    company_id = fields.Many2one(
+        'res.company', string="Company", required=True, states=READONLY_STATES,
+        default=lambda s: s.env.user.company_id)
+
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        if not self.partner_id:
+            self.fiscal_position_id = False
+            self.currency_id = False
+        else:
+            self.fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
+            self.currency_id = self.partner_id.property_purchase_currency_id.id or self.env.user.company_id.currency_id.id
+        return {}
 
     @api.model
     def create(self, vals):
@@ -207,17 +215,14 @@ class PurchaseRequest(models.Model):
             'origin': self.name,
             'partner_ref': self.description,
             'date_order': self.date_request,
-            'partner_id': self.supplier.id,
-            'dest_address_id': self.supplier.id,
+            'partner_id': self.partner_id.id,
+            'dest_address_id': self.partner_id.id,
             'currency_id': self.currency_id.id,
-            'validator': self.validator.id,
+            'validator': self.validator_id.id,
             'notes': self.notes,
+            'fiscal_position': self.fiscal_position_id.id or False,
+            'dest_address_id': self.partner_id.id,
         }
-        merge_vals = po_obj.onchange_partner_id(self.supplier.id)
-        po_vals.update(merge_vals['value'])
-        po_vals['fiscal_position'] = po_vals['fiscal_position'].id or False
-        merge_vals = po_obj.onchange_dest_address_id(po_vals['partner_id'])
-        po_vals.update(merge_vals['value'])
         return po_vals
 
     @api.model
@@ -229,7 +234,7 @@ class PurchaseRequest(models.Model):
                 'product_id': line.product_id.id,
                 'product_uom': line.product_uom.id,
                 'name': line.description or '',
-                'product_qty': line.quantity,
+                'product_qty': line.product_qty,
                 'price_unit': line.price_unit,
                 'taxes_id': [(6, 0, [t.id for t in line.taxes_id])],
                 'date_planned': fields.Date.today(),
@@ -270,74 +275,76 @@ class PurchaseRequestType(models.Model):
 class PurchaseRequestLine(models.Model):
     _name = 'purchase.request.line'
 
-    @api.depends('price_unit', 'quantity', 'product_id')
-    def _amount_line(self):
-        partner_id = self.env.user.company_id.partner_id.id
+    @api.depends('product_qty', 'price_unit', 'taxes_id')
+    def _compute_amount(self):
         for line in self:
             taxes = line.taxes_id.compute_all(
-                line.price_unit,
-                line.quantity,
-                line.product_id, partner_id)
-            cur = line.purchase_request_id.currency_id
-            line.price_subtotal = cur.round(taxes['total'])
-        return True
-
-    def _get_uom_id(self):
-        try:
-            proxy = self.env['ir.model.data']
-            result = proxy.get_object_reference('product', 'product_uom_unit')
-            return result[1]
-        except Exception:
-            return False
+                line.price_unit, line.purchase_request_id.currency_id, line.product_qty, product=line.product_id, partner=line.purchase_request_id.partner_id)
+            line.update({
+                'price_tax': taxes['total_included'] - taxes['total_excluded'],
+                'price_total': taxes['total_included'],
+                'price_subtotal': taxes['total_excluded'],
+            })
 
     purchase_request_id = fields.Many2one('purchase.request')
-    product_id = fields.Many2one('product.product', string="Product")
-    taxes_id = fields.Many2many('account.tax',
-                                'purchase_request_taxe',
-                                'ord_id', 'tax_id', string="Taxes")
-    product_uom = fields.Many2one('product.uom',
-                                  string="Product Unit of Measure",
-                                  required=True, default=_get_uom_id)
+    product_id = fields.Many2one('product.product', string="Product", domain=[
+                                 ('purchase_ok', '=', True)], change_default=True, required=True)
+    taxes_id = fields.Many2many('account.tax', string='Taxes')
+    product_uom = fields.Many2one('product.uom', string='Product Unit of Measure', required=True)
     description = fields.Char(string="Description")
-    currency_id = fields.Many2one('res.currency',
-                                  string="Currency",
-                                  related='purchase_request_id.currency_id')
-    quantity = fields.Float(
-        string="Quantity",
-        digits_compute=dp.get_precision('Product Unit of Measure'),
-        required=True, default=1.0)
-    price_unit = fields.Float(string="Unit Price",
-                              required=True,
-                              digits_compute=dp.get_precision('Product Price'))
-    price_subtotal = fields.Float(compute='_amount_line',
-                                  string="Subtotal",
-                                  digits_compute=dp.get_precision('Account'))
+    product_qty = fields.Float(string='Quantity', digits_compute=dp.get_precision('Product Unit of Measure'), required=True, default=1.0)
+    price_unit = fields.Float(string='Unit Price', required=True, digits_compute=dp.get_precision('Product Price'))
+    price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
+    price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True)
+    price_tax = fields.Monetary(compute='_compute_amount', string='Tax', store=True)
+    partner_id = fields.Many2one('res.partner', related='purchase_request_id.partner_id', string='Partner', readonly=True, store=True)
+    currency_id = fields.Many2one(related='purchase_request_id.currency_id', store=True, string='Currency', readonly=True)
+    date_request = fields.Datetime(related='purchase_request_id.date_request', string='Purchase Request Date', readonly=True)
 
-    @api.onchange('product_id', 'product_uom')
-    def onchange_product(self):
+    @api.onchange('product_id', 'product_qty', 'product_uom')
+    def onchange_product_id(self):
+        result = {}
         if not self.product_id:
-            if not self.product_uom:
-                uom_id = self.default_get(['product_uom']).get('product_uom',
-                                                               False)
-                if uom_id:
-                    self.product_uom = self.env['product.uom'].browse(uom_id)
-            return False
+            return {}
 
-        if not self.description:
-            # The 'or not uom_id' part of the above condition can be removed
-            # in master. See commit message of the rev. introducing this line.
-            dummy, name = self.product_id.name_get()[0]
-            if self.product_id.description_purchase:
-                name += '\n' + self.product_id.description_purchase
-            self.description = name
+        if self.product_id.uom_id.category_id.id != self.product_uom.category_id.id:
+            self.product_uom = self.product_id.uom_po_id
+        result['domain'] = {'product_uom': [('category_id', '=', self.product_id.uom_id.category_id.id)]}
 
-        self.price_unit = self.product_id.standard_price or 0.0
+        seller = self.product_id._select_seller(
+            self.product_id,
+            partner_id=self.partner_id,
+            quantity=self.product_qty,
+            date=self.purchase_request_id.date_request and self.purchase_request_id.date_request[:10],
+            uom_id=self.product_uom)
 
-        taxes = self.env['account.tax'].browse(
-            map(lambda x: x.id, self.product_id.supplier_taxes_id))
-        taxes_ids = self.env['account.fiscal.position'].map_tax(taxes)
-        self.taxes_id = taxes_ids
-        return False
+        price_unit = seller.price if seller else 0.0
+        if price_unit and seller and self.purchase_request_id.currency_id and seller.currency_id != self.purchase_request_id.currency_id:
+            price_unit = seller.currency_id.compute(price_unit, self.purchase_request_id.currency_id)
+        self.price_unit = price_unit
+
+        product_lang = self.product_id.with_context({
+            'lang': self.partner_id.lang,
+            'partner_id': self.partner_id.id,
+        })
+        self.description = product_lang.display_name
+        if product_lang.description_purchase:
+            self.description += '\n' + product_lang.description_purchase
+
+        taxes = self.product_id.supplier_taxes_id
+        fpos = self.purchase_request_id.fiscal_position_id
+        if fpos:
+            self.taxes_id = fpos.map_tax(taxes)
+
+        result['value'] = {
+            'description': self.description,
+            'product_uom': self.product_uom.id,
+            'product_qty': self.product_qty,
+            'taxes_id': self.taxes_id.ids,
+            'price_unit': self.price_unit,
+        }
+
+        return result
 
 
 class MailComposeMessage(models.Model):
@@ -351,4 +358,4 @@ class MailComposeMessage(models.Model):
                 and context.get('mark_so_as_sent'):
             pr = self.env['purchase.request']
             pr.browse(context['default_res_id']).signal_workflow('send')
-        return super(MailComposeMessage, self).send_mail(context=context)
+        return super(MailComposeMessage, self).send_mail()

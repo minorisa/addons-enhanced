@@ -18,7 +18,7 @@ Click to create a purchase request that will be sent for its approval.
 			<field name="arch" type="xml">
 				<tree string="Purchase Requests">
 					<field name="name" />
-					<field name="employee"></field>
+					<field name="employee_id"></field>
 					<field name="date_request"></field>
 					<field name="description"></field>
 					<field name="amount_total" />
@@ -60,14 +60,14 @@ Click to create a purchase request that will be sent for its approval.
 							<group>
 								<field name="is_employee" invisible="1"></field>
 								<field name="is_validator" invisible="1"></field>
-								<field name="supplier" domain="[('supplier', '=', 'True)]" />
+								<field name="partner_id" domain="[('supplier', '=', 'True)]" />
 								<field name="description"></field>
 								<field name="currency_id" />
 							</group>
 							<group>
 								<field name="date_request" widget="date" />
-								<field name="employee"></field>
-								<field name="validator"></field>
+								<field name="employee_id"></field>
+								<field name="validator_id"></field>
 								<field name="request_type"></field>
 								<field name="purchase_order_id"></field>
 							</group>
@@ -76,11 +76,11 @@ Click to create a purchase request that will be sent for its approval.
 							<tree string="Purchase Requests Lines" editable="bottom">
 								<field name="product_id" />
 								<field name="description" />
-								<field name="quantity" />
+								<field name="product_qty" />
 								<field name="product_uom" />
 								<field name="price_unit" />
 								<field name="taxes_id" widget="many2many_tags"
-									domain="[('parent_id','=',False),('type_tax_use','!=','sale')]" />
+									domain="[('type_tax_use','=','purchase')]" />
 								<field name="price_subtotal" />
 							</tree>
 						</field>
