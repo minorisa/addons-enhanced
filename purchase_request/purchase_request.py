@@ -139,7 +139,8 @@ class PurchaseRequest(models.Model):
                                 string="Total")
     company_id = fields.Many2one(
         'res.company', string="Company", required=True, states=READONLY_STATES,
-        default=lambda s: s.env['res.company']._company_default_get('purchase.request'))
+        default=lambda s: s.env['res.company']._company_default_get(
+			'purchase.request'))
 
     @api.model
     def create(self, vals):
