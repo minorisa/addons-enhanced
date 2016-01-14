@@ -9,10 +9,10 @@
   Create a new PR
 -
   !record {model: purchase.request, id: purchase_request_test}:
-    supplier: base.res_partner_18
+    partner_id: base.res_partner_18
     description: 'Description'
-    employee: 1
-    validator: 1
+    employee_id: 1
+    validator_id: 1
     request_type: purchase_request_type_test
 -
   Check if name is assigned by sequence
@@ -24,12 +24,12 @@
 -
   !record {model: purchase.request.line, id: purchase_request_line_1}:
     purchase_request_id: purchase_request_test
-    quantity: 10
+    product_qty: 10
     price_unit: 10
 -
   !record {model: purchase.request.line, id: purchase_request_line_2}:
     purchase_request_id: purchase_request_test
-    quantity: 20
+    product_qty: 20
     price_unit: 5
 -
   Check if sum calculations are correctly computed

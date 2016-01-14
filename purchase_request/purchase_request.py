@@ -89,7 +89,8 @@ class PurchaseRequest(models.Model):
         'res.partner',
         string="Supplier Reference", copy=True,
         help="Supplier", states=READONLY_STATES)
-    description = fields.Char(string="Purchase Description", states=READONLY_STATES)
+    description = fields.Char(
+        string="Purchase Description", states=READONLY_STATES)
     date_request = fields.Datetime(string="Request Date", required=True,
                                    copy=True, default=fields.Datetime.now(),
                                    states=READONLY_STATES)
@@ -107,13 +108,14 @@ class PurchaseRequest(models.Model):
         states=READONLY_STATES,
         copy=True)
     employee_id = fields.Many2one('res.users',
-                               string="Requested By",
-                               required=True, copy=True,
-                               default=lambda s: s.env.user,
-                               states=READONLY_STATES)
+                                  string="Requested By",
+                                  required=True, copy=True,
+                                  default=lambda s: s.env.user,
+                                  states=READONLY_STATES)
     is_employee = fields.Boolean(string="Is Employee Responsible",
                                  compute='_is_employee', store=True)
-    validator_id = fields.Many2one('res.users', string="Validated by", copy=False)
+    validator_id = fields.Many2one(
+        'res.users', string="Validated by", copy=False)
     is_validator = fields.Boolean(string="Is Validator Responsible",
                                   compute='_is_validator', store=True)
     notes = fields.Text('Terms and Conditions')
@@ -131,7 +133,9 @@ class PurchaseRequest(models.Model):
     amount_total = fields.Float(compute='_amount_all',
                                 digits_compute=dp.get_precision('Account'),
                                 string="Total")
-    fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', oldname='fiscal_position')
+    fiscal_position_id = fields.Many2one(
+        'account.fiscal.position', string='Fiscal Position',
+        oldname='fiscal_position')
     company_id = fields.Many2one(
         'res.company', string="Company", required=True, states=READONLY_STATES,
         default=lambda s: s.env.user.company_id)
@@ -142,8 +146,10 @@ class PurchaseRequest(models.Model):
             self.fiscal_position_id = False
             self.currency_id = False
         else:
-            self.fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
-            self.currency_id = self.partner_id.property_purchase_currency_id.id or self.env.user.company_id.currency_id.id
+            self.fiscal_position_id = self.env[
+                'account.fiscal.position'].get_fiscal_position(self.partner_id.id)
+            self.currency_id = self.partner_id.property_purchase_currency_id.id \
+                or self.env.user.company_id.currency_id.id
         return {}
 
     @api.model
@@ -279,7 +285,9 @@ class PurchaseRequestLine(models.Model):
     def _compute_amount(self):
         for line in self:
             taxes = line.taxes_id.compute_all(
-                line.price_unit, line.purchase_request_id.currency_id, line.product_qty, product=line.product_id, partner=line.purchase_request_id.partner_id)
+                line.price_unit, line.purchase_request_id.currency_id,
+                line.product_qty, product=line.product_id,
+                partner=line.purchase_request_id.partner_id)
             line.update({
                 'price_tax': taxes['total_included'] - taxes['total_excluded'],
                 'price_total': taxes['total_included'],
@@ -288,18 +296,34 @@ class PurchaseRequestLine(models.Model):
 
     purchase_request_id = fields.Many2one('purchase.request')
     product_id = fields.Many2one('product.product', string="Product", domain=[
-                                 ('purchase_ok', '=', True)], change_default=True, required=True)
+                                 ('purchase_ok', '=', True)],
+                                 change_default=True,
+                                 required=True)
     taxes_id = fields.Many2many('account.tax', string='Taxes')
-    product_uom = fields.Many2one('product.uom', string='Product Unit of Measure', required=True)
+    product_uom = fields.Many2one(
+        'product.uom', string='Product Unit of Measure', required=True)
     description = fields.Char(string="Description")
-    product_qty = fields.Float(string='Quantity', digits_compute=dp.get_precision('Product Unit of Measure'), required=True, default=1.0)
-    price_unit = fields.Float(string='Unit Price', required=True, digits_compute=dp.get_precision('Product Price'))
-    price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
-    price_total = fields.Monetary(compute='_compute_amount', string='Total', store=True)
-    price_tax = fields.Monetary(compute='_compute_amount', string='Tax', store=True)
-    partner_id = fields.Many2one('res.partner', related='purchase_request_id.partner_id', string='Partner', readonly=True, store=True)
-    currency_id = fields.Many2one(related='purchase_request_id.currency_id', store=True, string='Currency', readonly=True)
-    date_request = fields.Datetime(related='purchase_request_id.date_request', string='Purchase Request Date', readonly=True)
+    product_qty = fields.Float(string='Quantity',
+                               digits_compute=dp.get_precision(
+                                   'Product Unit of Measure'), required=True, default=1.0)
+    price_unit = fields.Float(
+        string='Unit Price',
+        required=True, digits_compute=dp.get_precision('Product Price'))
+    price_subtotal = fields.Monetary(
+        compute='_compute_amount', string='Subtotal', store=True)
+    price_total = fields.Monetary(
+        compute='_compute_amount', string='Total', store=True)
+    price_tax = fields.Monetary(
+        compute='_compute_amount', string='Tax', store=True)
+    partner_id = fields.Many2one(
+        'res.partner', related='purchase_request_id.partner_id',
+        string='Partner', readonly=True, store=True)
+    currency_id = fields.Many2one(
+        related='purchase_request_id.currency_id', store=True,
+        string='Currency', readonly=True)
+    date_request = fields.Datetime(
+        related='purchase_request_id.date_request',
+        string='Purchase Request Date', readonly=True)
 
     @api.onchange('product_id', 'product_qty', 'product_uom')
     def onchange_product_id(self):
@@ -307,20 +331,27 @@ class PurchaseRequestLine(models.Model):
         if not self.product_id:
             return {}
 
-        if self.product_id.uom_id.category_id.id != self.product_uom.category_id.id:
+        if self.product_id.uom_id.category_id.id != \
+                self.product_uom.category_id.id:
+
             self.product_uom = self.product_id.uom_po_id
-        result['domain'] = {'product_uom': [('category_id', '=', self.product_id.uom_id.category_id.id)]}
+        result['domain'] = {
+            'product_uom': [('category_id', '=',
+                             self.product_id.uom_id.category_id.id)]}
 
         seller = self.product_id._select_seller(
             self.product_id,
             partner_id=self.partner_id,
             quantity=self.product_qty,
-            date=self.purchase_request_id.date_request and self.purchase_request_id.date_request[:10],
+            date=self.purchase_request_id.date_request and
+            self.purchase_request_id.date_request[:10],
             uom_id=self.product_uom)
 
         price_unit = seller.price if seller else 0.0
-        if price_unit and seller and self.purchase_request_id.currency_id and seller.currency_id != self.purchase_request_id.currency_id:
-            price_unit = seller.currency_id.compute(price_unit, self.purchase_request_id.currency_id)
+        if price_unit and seller and self.purchase_request_id.currency_id \
+                and seller.currency_id != self.purchase_request_id.currency_id:
+            price_unit = seller.currency_id.compute(
+                price_unit, self.purchase_request_id.currency_id)
         self.price_unit = price_unit
 
         product_lang = self.product_id.with_context({
