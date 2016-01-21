@@ -19,10 +19,13 @@ This repository includes the following public (AGPL) & generic addons for Odoo:
    
    ========================= ============================================= 
    Addon                     Description
-   ------------------------- ---------------------------------------------
+   ========================= =============================================
    purchase_request          This module is designed to manage equipment o
                              services purchase requests, subject to 
                              acceptance by a department leader.
+   ------------------------- ---------------------------------------------
+   list_view_limit_options   This module enables you to set different 
+                             options in records per page drop-down.
    ========================= =============================================
    
 
