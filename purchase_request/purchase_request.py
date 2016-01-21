@@ -55,6 +55,21 @@ class PurchaseRequest(models.Model):
             lambda self, cr, uid, obj, ctx=None: obj.state in ['pending']
         },
     }
+    @api.model
+    def default_get(self, field_list):
+        res = super(PurchaseRequest, self).default_get(field_list)
+       
+        if 'employee' not in res:
+            employee_obj = self.env['hr.employee']
+            
+            domain = [('user_id','=',self.env.user.id)]
+            employee_ids = employee_obj.search(domain,limit=1)
+            if employee_ids:
+                employee_id = employee_ids[0].id
+            
+       
+                res.update({'employee': employee_id})
+        return res
 
     @api.depends('purchase_line')
     def _amount_all(self):
@@ -78,12 +93,27 @@ class PurchaseRequest(models.Model):
     @api.depends('employee')
     def _is_employee(self):
         for e in self:
-            e.is_employee = e.employee == self.env.user
+            employee_obj = self.env['hr.employee']
+            
+            domain = [('user_id','=',self.env.user.id)]
+            employee_ids = employee_obj.search(domain,limit=1)
+            if employee_ids:
+                employee_id = employee_ids[0].id
+            
+            e.is_employee = e.employee.id == employee_id
 
     @api.depends('validator')
     def _is_validator(self):
         for v in self:
-            v.is_validator = v.validator == self.env.user
+            
+            employee_obj = self.env['hr.employee']
+            
+            domain = [('user_id','=',self.env.user.id)]
+            employee_ids = employee_obj.search(domain,limit=1)
+            if employee_ids:
+                employee_id = employee_ids[0].id
+                
+            v.is_validator = v.validator.id == employee_id
 
     name = fields.Char(
         string="Purchase Request",
@@ -112,14 +142,15 @@ class PurchaseRequest(models.Model):
         'Request Lines',
         states=READONLY_STATES,
         copy=True)
-    employee = fields.Many2one('res.users',
+    employee = fields.Many2one('hr.employee',
                                string="Requested By",
                                required=True, copy=True,
-                               default=lambda s: s.env.user,
+                               #default=lambda s: s.env.user,
                                states=READONLY_STATES)
     is_employee = fields.Boolean(string="Is Employee Responsible",
                                  compute='_is_employee', store=True)
-    validator = fields.Many2one('res.users', string="Validated by", copy=False)
+    validator = fields.Many2one('hr.employee', string="Validated by", copy=False)
+    
     is_validator = fields.Boolean(string="Is Validator Responsible",
                                   compute='_is_validator', store=True)
     notes = fields.Text('Terms and Conditions')
@@ -137,13 +168,6 @@ class PurchaseRequest(models.Model):
     amount_total = fields.Float(compute='_amount_all',
                                 digits_compute=dp.get_precision('Account'),
                                 string="Total")
-    company_id = fields.Many2one(
-        'res.company',
-        string="Company",
-        required=True,
-        states=READONLY_STATES,
-        default=lambda s: s.env['res.company']._company_default_get(
-            'purchase.request'))
 
     @api.model
     def create(self, vals):
@@ -360,3 +384,4 @@ class MailComposeMessage(models.Model):
             pr = self.env['purchase.request']
             pr.browse(context['default_res_id']).signal_workflow('send')
         return super(MailComposeMessage, self).send_mail(context=context)
+
