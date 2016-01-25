@@ -30,6 +30,7 @@
     "summary": "Purchase Request Module",
     "depends": [
         'purchase',
+        'hr'
         ],
     'data': [
         'security/ir.model.access.csv',

@@ -47,7 +47,7 @@ class TestPurchaseRequest(TransactionCase):
                               {'name': 'Test Purchase Request Type'})
 
         # Create admin user
-        admin = self.browse_ref('base.user_root')
+        admin = self.browse_ref('hr.employee')
 
         # Create Purchase Request
         vals = {
