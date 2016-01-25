@@ -27,9 +27,12 @@ class WebsiteConfigSettings(models.TransientModel):
 
     _inherit = 'website.config.settings'
     
-    default_limit_stops = fields.Char(string="Limit Stops", default_model="list.view.limit.options")
-    default_hide_unlimited = fields.Boolean(string="Hide Unlimited Option", default_model="list.view.limit.options")
-    
+    default_limit_stops = fields.Char(string="Limit Stops",
+                                      default_model="list.view.limit.options")
+    default_hide_unlimited = fields.Boolean(
+        string="Hide Unlimited Option",
+        default_model="list.view.limit.options")
+
     @api.onchange('default_limit_stops')
     def onchangelimitstops(self):
         dls = self.default_limit_stops
@@ -47,5 +50,3 @@ class WebsiteConfigSettings(models.TransientModel):
                 self.default_limit_stops = ",".join(new_arr)
             else:
                 self.default_limit_stops = ""
-
-                
