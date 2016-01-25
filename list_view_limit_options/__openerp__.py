@@ -21,20 +21,20 @@
 ##############################################################################
 
 {
-    "name" : "List View Limit Options",
-    "version" : "1.0",
-    "author" : "Minorisa",
-    "category" : "Sales Management",
-    "website" : "http://www.minorisa.net/",
-    "license" : "GPL-3",
-    "summary" : "Enables you to set different options in records per page drop-down.",
-    "depends" : ['website'],
+    "name": "List View Limit Options",
+    "version": "1.0",
+    "author": "Minorisa",
+    "category": "Sales Management",
+    "website": "http://www.minorisa.net/",
+    "license": "GPL-3",
+    "summary": "Enables you to set options in records per page drop-down.",
+    "depends": ['website'],
     'data': [
         'list_view_limit_options.xml',
         'website_res_config_view.xml',
         ],
-    "init_xml" : [],
-    "demo_xml" : [],
-    "installable" : True,
-    "active" : False,
+    "init_xml": [],
+    "demo_xml": [],
+    "installable": True,
+    "active": False,
 }

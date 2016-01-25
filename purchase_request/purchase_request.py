@@ -26,7 +26,6 @@ from openerp import models, fields, api, _
 import openerp.addons.decimal_precision as dp
 from openerp.exceptions import ValidationError
 
-
 _logger = logging.getLogger(__name__)
 
 STATE_SELECTION = [
@@ -55,19 +54,19 @@ class PurchaseRequest(models.Model):
             lambda self, cr, uid, obj, ctx=None: obj.state in ['pending']
         },
     }
+
     @api.model
     def default_get(self, field_list):
         res = super(PurchaseRequest, self).default_get(field_list)
-       
+
         if 'employee' not in res:
             employee_obj = self.env['hr.employee']
-            
-            domain = [('user_id','=',self.env.user.id)]
-            employee_ids = employee_obj.search(domain,limit=1)
+
+            domain = [('user_id', '=', self.env.user.id)]
+            employee_ids = employee_obj.search(domain, limit=1)
             if employee_ids:
                 employee_id = employee_ids[0].id
-            
-       
+
                 res.update({'employee': employee_id})
         return res
 
@@ -94,25 +93,25 @@ class PurchaseRequest(models.Model):
     def _is_employee(self):
         for e in self:
             employee_obj = self.env['hr.employee']
-            
-            domain = [('user_id','=',self.env.user.id)]
-            employee_ids = employee_obj.search(domain,limit=1)
+
+            domain = [('user_id', '=', self.env.user.id)]
+            employee_ids = employee_obj.search(domain, limit=1)
             if employee_ids:
                 employee_id = employee_ids[0].id
-            
+
             e.is_employee = e.employee.id == employee_id
 
     @api.depends('validator')
     def _is_validator(self):
         for v in self:
-            
+
             employee_obj = self.env['hr.employee']
-            
-            domain = [('user_id','=',self.env.user.id)]
-            employee_ids = employee_obj.search(domain,limit=1)
+
+            domain = [('user_id', '=', self.env.user.id)]
+            employee_ids = employee_obj.search(domain, limit=1)
             if employee_ids:
                 employee_id = employee_ids[0].id
-                
+
             v.is_validator = v.validator.id == employee_id
 
     name = fields.Char(
@@ -145,12 +144,13 @@ class PurchaseRequest(models.Model):
     employee = fields.Many2one('hr.employee',
                                string="Requested By",
                                required=True, copy=True,
-                               #default=lambda s: s.env.user,
+                               # default=lambda s: s.env.user,
                                states=READONLY_STATES)
     is_employee = fields.Boolean(string="Is Employee Responsible",
                                  compute='_is_employee', store=True)
-    validator = fields.Many2one('hr.employee', string="Validated by", copy=False)
-    
+    validator = fields.Many2one('hr.employee', string="Validated by",
+                                copy=False)
+
     is_validator = fields.Boolean(string="Is Validator Responsible",
                                   compute='_is_validator', store=True)
     notes = fields.Text('Terms and Conditions')
@@ -384,4 +384,3 @@ class MailComposeMessage(models.Model):
             pr = self.env['purchase.request']
             pr.browse(context['default_res_id']).signal_workflow('send')
         return super(MailComposeMessage, self).send_mail(context=context)
-
