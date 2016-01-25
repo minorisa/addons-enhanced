@@ -26,7 +26,11 @@ from openerp import models, fields, api
 class WebsiteConfigSettings(models.TransientModel):
 
     _inherit = 'website.config.settings'
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> branch '8.0' of https://github.com/minorisa/addons-enhanced
     default_limit_stops = fields.Char(string="Limit Stops",
                                       default_model="list.view.limit.options")
     default_hide_unlimited = fields.Boolean(
