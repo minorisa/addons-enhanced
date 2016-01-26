@@ -24,18 +24,14 @@ from openerp import models, fields, api
 
 
 class WebsiteConfigSettings(models.TransientModel):
-
     _inherit = 'website.config.settings'
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> branch '8.0' of https://github.com/minorisa/addons-enhanced
     default_limit_stops = fields.Char(string="Limit Stops",
                                       default_model="list.view.limit.options")
     default_hide_unlimited = fields.Boolean(
         string="Hide Unlimited Option",
         default_model="list.view.limit.options")
+
 
     @api.onchange('default_limit_stops')
     def onchangelimitstops(self):
@@ -48,9 +44,9 @@ class WebsiteConfigSettings(models.TransientModel):
                     v = int(a)
                 except:
                     v = False
-                if v:
-                    new_arr.append(str(v))
-            if len(new_arr) > 0:
-                self.default_limit_stops = ",".join(new_arr)
-            else:
-                self.default_limit_stops = ""
+            if v:
+                new_arr.append(str(v))
+        if len(new_arr) > 0:
+            self.default_limit_stops = ",".join(new_arr)
+        else:
+            self.default_limit_stops = ""

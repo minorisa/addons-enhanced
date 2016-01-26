@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf8"?>
 <openerp>
-	<data>
-		<!-- Purchase request-related subtypes for messaging / Chatter -->
-		<record id="mt_request_sent" model="mail.message.subtype">
-			<field name="name">Purchase Request sent</field>
-			<field name="res_model">purchase.request</field>
-			<field name="default" eval="False" />
-			<field name="description">Purchase Request sent</field>
-		</record>
+    <data>
+        <!-- Purchase request-related subtypes for messaging / Chatter -->
+        <record id="mt_request_sent" model="mail.message.subtype">
+            <field name="name">Purchase Request sent</field>
+            <field name="res_model">purchase.request</field>
+            <field name="default" eval="False"/>
+            <field name="description">Purchase Request sent</field>
+        </record>
         <!--Email template -->
         <record id="purchase_request_template" model="email.template">
             <field name="name">Purchase Request - Send by Email</field>
@@ -40,5 +40,5 @@
 </div>
             ]]></field>
         </record>
-	</data> 
+    </data>
 </openerp>

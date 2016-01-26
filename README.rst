@@ -1,12 +1,12 @@
 .. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
-   :alt: AGPL License log
+:alt: AGPL License log
 
 .. image:: https://travis-ci.org/minorisa/addons-enhanced.svg?branch=8.0
-   :target: https://travis-ci.org/minorisa/addons-enhanced
+:target: https://travis-ci.org/minorisa/addons-enhanced
     
     
 .. image:: https://coveralls.io/repos/minorisa/addons-enhanced/badge.svg?branch=8.0&service=github 
-   :target: https://coveralls.io/github/minorisa/addons-enhanced?branch=8.0
+:target: https://coveralls.io/github/minorisa/addons-enhanced?branch=8.0
 
 
 Minorisa Enhanced Addons
@@ -15,7 +15,7 @@ Minorisa Enhanced Addons
 This repository includes the following public (AGPL) & generic addons for Odoo:
 
 .. table:: Enhanced Addons
-   :class: table table-condensed
+:class: table table-condensed
    
    ========================= ============================================= 
    Addon                     Description
@@ -36,10 +36,10 @@ Maintainer
 ..........
 
 .. image:: http://www.minorisa.net/wp-content/themes/minorisa/img/logo-minorisa.png
-   :target: http://www.minorisa.net
+:target: http://www.minorisa.net
    :alt: Minorisa Logo
 
-   
+
 Contributors
 ............
 

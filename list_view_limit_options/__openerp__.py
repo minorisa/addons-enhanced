@@ -32,7 +32,7 @@
     'data': [
         'list_view_limit_options.xml',
         'website_res_config_view.xml',
-        ],
+    ],
     "init_xml": [],
     "demo_xml": [],
     "installable": True,

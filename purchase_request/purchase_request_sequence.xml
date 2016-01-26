@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <!-- Sequences for purchase.order --> 
+        <!-- Sequences for purchase.order -->
         <record id="seq_type_purchase_request" model="ir.sequence.type">
             <field name="name">Purchase Request</field>
             <field name="code">purchase.request</field>

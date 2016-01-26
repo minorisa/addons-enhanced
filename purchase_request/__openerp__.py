@@ -31,7 +31,7 @@
     "depends": [
         'purchase',
         'hr'
-        ],
+    ],
     'data': [
         'security/ir.model.access.csv',
         'purchase_request_wkf.xml',
@@ -40,7 +40,7 @@
         'purchase_request_data.xml',
         'purchase_order_view.xml',
         'purchase_request_type_view.xml',
-        ],
+    ],
     "init_xml": [],
     "test": [],
     "demo_xml": [],

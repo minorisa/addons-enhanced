@@ -24,7 +24,6 @@ from openerp.tests.common import TransactionCase
 
 
 class TestPurchaseRequest(TransactionCase):
-
     def test_purchase_request_type(self):
         """ Testing Purchase Request Type creation... """
         prtobj = self.registry('purchase.request.type')

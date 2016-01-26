@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf8"?>
 <openerp>
-	<data>
-		<record id="purchase_request_type_form_action" model="ir.actions.act_window">
-			<field name="name">Purchase Request Types</field>
-			<field name="res_model">purchase.request.type</field>
-			<field name="view_mode">tree,form</field>
-			<field name="help" type="html">
-				<p class="oe_view_nocontent_create">
-Click to create a purchase request type that will be used to categorize purchase requests.
-				</p>
-			</field>
-		</record>
+    <data>
+        <record id="purchase_request_type_form_action" model="ir.actions.act_window">
+            <field name="name">Purchase Request Types</field>
+            <field name="res_model">purchase.request.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a purchase request type that will be used to categorize purchase requests.
+                </p>
+            </field>
+        </record>
 
-		<record id="purchase_request_type_tree" model="ir.ui.view">
-			<field name="name">purchase.request.type.tree</field>
-			<field name="model">purchase.request.type</field>
-			<field name="arch" type="xml">
-				<tree string="Purchase Request Types">
-					<field name="name" />
-				</tree>
-			</field>
-		</record>
+        <record id="purchase_request_type_tree" model="ir.ui.view">
+            <field name="name">purchase.request.type.tree</field>
+            <field name="model">purchase.request.type</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Request Types">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
 
-		<record id="purchase_request_type_form" model="ir.ui.view">
-			<field name="name">purchase.request.type.form</field>
-			<field name="model">purchase.request.type</field>
-			<field name="arch" type="xml">
-				<form string="Purchase Request Type">
-					<label for="name"></label>
-					<field name="name"></field>
-				</form>
-			</field>
-		</record>
+        <record id="purchase_request_type_form" model="ir.ui.view">
+            <field name="name">purchase.request.type.form</field>
+            <field name="model">purchase.request.type</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Request Type">
+                    <label for="name"></label>
+                    <field name="name"></field>
+                </form>
+            </field>
+        </record>
 
-		<menuitem action="purchase_request_type_form_action" id="menu_purchase_request_type_form_action"
-			parent="purchase.menu_purchase_config_purchase" sequence="20" />
-	</data>
+        <menuitem action="purchase_request_type_form_action" id="menu_purchase_request_type_form_action"
+                  parent="purchase.menu_purchase_config_purchase" sequence="20"/>
+    </data>
 </openerp>
