@@ -115,32 +115,32 @@ class PurchaseRequest(models.Model):
             v.is_validator = v.validator.id == employee_id
 
     name = fields.Char(
-            string="Purchase Request",
-            required=True, select=True, copy=False,
-            default=lambda a: '/', states=READONLY_STATES,
-            help="Unique number of the purchase request, \
+        string="Purchase Request",
+        required=True, select=True, copy=False,
+        default=lambda a: '/', states=READONLY_STATES,
+        help="Unique number of the purchase request, \
             computed automatically when the purchase request is created.")
     supplier = fields.Many2one(
-            'res.partner',
-            string="Supplier Reference", copy=True,
-            help="Supplier", states=READONLY_STATES, required=True)
+        'res.partner',
+        string="Supplier Reference", copy=True,
+        help="Supplier", states=READONLY_STATES, required=True)
     description = fields.Char(string="Description", states=READONLY_STATES)
     date_request = fields.Datetime(string="Request Date", required=True,
                                    copy=True, default=fields.Datetime.now(),
                                    states=READONLY_STATES)
     currency_id = fields.Many2one(
-            'res.currency', string="Currency",
-            required=True, states=READONLY_STATES,
-            default=lambda s: s.env.user.company_id.currency_id.id)
+        'res.currency', string="Currency",
+        required=True, states=READONLY_STATES,
+        default=lambda s: s.env.user.company_id.currency_id.id)
     state = fields.Selection(selection=STATE_SELECTION, string="Status",
                              readonly=True, help="Status",
                              select=True, copy=False, default="draft")
     purchase_line = fields.One2many(
-            'purchase.request.line',
-            'purchase_request_id',
-            'Request Lines',
-            states=READONLY_STATES,
-            copy=True)
+        'purchase.request.line',
+        'purchase_request_id',
+        'Request Lines',
+        states=READONLY_STATES,
+        copy=True)
     employee = fields.Many2one('hr.employee',
                                string="Requested By",
                                required=True, copy=True,
@@ -185,7 +185,7 @@ class PurchaseRequest(models.Model):
                 unlink_ids |= s
             else:
                 raise ValidationError(
-                        _("In order to delete a purchase request, \
+                    _("In order to delete a purchase request, \
                         it must be in Draft state."))
 
         return super(PurchaseRequest, unlink_ids).unlink()
@@ -201,14 +201,14 @@ class PurchaseRequest(models.Model):
         ir_model_data = self.env['ir.model.data']
         try:
             template_id = ir_model_data.get_object_reference(
-                    'purchase_request',
-                    'purchase_request_template')[1]
+                'purchase_request',
+                'purchase_request_template')[1]
         except ValueError:
             template_id = False
         try:
             compose_form_id = ir_model_data.get_object_reference(
-                    'mail',
-                    'email_compose_message_wizard_form')[1]
+                'mail',
+                'email_compose_message_wizard_form')[1]
         except ValueError:
             compose_form_id = False
         ctx = dict()
@@ -306,9 +306,9 @@ class PurchaseRequestLine(models.Model):
         partner_id = self.env.user.company_id.partner_id.id
         for line in self:
             taxes = line.taxes_id.compute_all(
-                    line.price_unit,
-                    line.quantity,
-                    line.product_id, partner_id)
+                line.price_unit,
+                line.quantity,
+                line.product_id, partner_id)
             cur = line.purchase_request_id.currency_id
             line.price_subtotal = cur.round(taxes['total'])
         return True
@@ -335,9 +335,9 @@ class PurchaseRequestLine(models.Model):
                                   string="Currency",
                                   related='purchase_request_id.currency_id')
     quantity = fields.Float(
-            string="Quantity",
-            digits_compute=dp.get_precision('Product Unit of Measure'),
-            required=True, default=1.0)
+        string="Quantity",
+        digits_compute=dp.get_precision('Product Unit of Measure'),
+        required=True, default=1.0)
     price_unit = fields.Float(string="Unit Price",
                               required=True,
                               digits_compute=dp.get_precision('Product Price'))
@@ -366,7 +366,7 @@ class PurchaseRequestLine(models.Model):
         self.price_unit = self.product_id.standard_price or 0.0
 
         taxes = self.env['account.tax'].browse(
-                map(lambda x: x.id, self.product_id.supplier_taxes_id))
+            map(lambda x: x.id, self.product_id.supplier_taxes_id))
         taxes_ids = self.env['account.fiscal.position'].map_tax(taxes)
         self.taxes_id = taxes_ids
         return False
