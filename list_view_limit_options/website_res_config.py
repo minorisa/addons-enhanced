@@ -32,7 +32,6 @@ class WebsiteConfigSettings(models.TransientModel):
         string="Hide Unlimited Option",
         default_model="list.view.limit.options")
 
-
     @api.onchange('default_limit_stops')
     def onchangelimitstops(self):
         dls = self.default_limit_stops

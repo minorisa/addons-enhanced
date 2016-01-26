@@ -119,7 +119,7 @@ class PurchaseRequest(models.Model):
             required=True, select=True, copy=False,
             default=lambda a: '/', states=READONLY_STATES,
             help="Unique number of the purchase request, \
-        computed automatically when the purchase request is created.")
+            computed automatically when the purchase request is created.")
     supplier = fields.Many2one(
             'res.partner',
             string="Supplier Reference", copy=True,
