@@ -186,7 +186,7 @@ class PurchaseRequest(models.Model):
             else:
                 raise ValidationError(
                         _("In order to delete a purchase request, \
-                    it must be in Draft state."))
+                        it must be in Draft state."))
 
         return super(PurchaseRequest, unlink_ids).unlink()
 
