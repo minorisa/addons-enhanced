@@ -1,5 +1,5 @@
 .. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
-:alt: AGPL License log
+   :alt: AGPL License log
 
 
 Purchase Request
@@ -18,7 +18,7 @@ Purchase Order is deleted, the purchase request will return to ``Accepted`` stat
 
  
 .. image:: static/description/purchase_request_workflow.png
-:alt: Purchase Request WorkFlow Diagram
+   :alt: Purchase Request WorkFlow Diagram
  
 
 Credits
@@ -28,7 +28,7 @@ Maintainer
 ..........
 
 .. image:: http://www.minorisa.net/wp-content/themes/minorisa/img/logo-minorisa.png
-:target: http://www.minorisa.net
+   :target: http://www.minorisa.net
    :alt: Minorisa Logo
 
 
