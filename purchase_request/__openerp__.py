@@ -30,7 +30,7 @@
     "summary": "Purchase Request Module",
     "depends": [
         'purchase',
-        ],
+    ],
     'data': [
         'security/ir.model.access.csv',
         'purchase_request_wkf.xml',
@@ -39,11 +39,9 @@
         'purchase_request_data.xml',
         'purchase_order_view.xml',
         'purchase_request_type_view.xml',
-        ],
+    ],
     "init_xml": [],
-    "test": [
-        'test/purchase_request.yml',
-        ],
+    "test": [],
     "demo_xml": [],
     "installable": True,
     "active": False,
