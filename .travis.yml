@@ -1,10 +1,14 @@
+sudo: false
+cache: pip
+
 language: python
 
 python:
   - "2.7"
 
 env:
-  - VERSION="9.0" ODOO_REPO="odoo/odoo" UNIT_TEST="1"
+  - VERSION="9.0" LINT_CHECK="1"
+  - VERSION="9.0" ODOO_REPO="odoo/odoo" LINT_CHECK="0"
 
 addons:
   apt:
@@ -20,9 +24,9 @@ virtualenv:
   system_site_packages: true
 
 install:
-  - git clone https://github.com/amdeb/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+  - git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
-  - travis_install_nightly
+  - travis_install_nightly ${VERSION}
   - pip install unicodecsv unidecode ofxparse
 
 script:
