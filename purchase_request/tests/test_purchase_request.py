@@ -115,7 +115,7 @@ class TestPurchaseRequest(TransactionCase):
         self.assertEqual(pr.state,
                          'po_created',
                          "Error setting state to 'po_created'.")
-        # po = poobj.browse(cr, uid, [poid])
+        po = poobj.browse(cr, uid, [poid])
         # po.unlink()
         # self.assertEqual(pr.state,
         #                  'approved',

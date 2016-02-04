@@ -8,7 +8,6 @@ python:
 
 env:
   - VERSION="9.0" ODOO_REPO="odoo/odoo" INCLUDE="purchase_request"
-  - VERSION="9.0" UNIT_TEST="1" INCLUDE="purchase_request"
 
 addons:
   apt:

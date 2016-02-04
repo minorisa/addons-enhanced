@@ -224,9 +224,9 @@ class PurchaseRequest(models.Model):
             'partner_id': self.partner_id.id,
             'dest_address_id': self.partner_id.id,
             'currency_id': self.currency_id.id,
-            'validator': self.validator_id.id,
+            # 'validator': self.validator_id.id,
             'notes': self.notes,
-            'fiscal_position': self.fiscal_position_id.id or False,
+            # 'fiscal_position': self.fiscal_position_id.id or False,
         }
         return po_vals
 
