@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf8"?>
+<openerp>
+    <data>
+        <template inherit_id="web.assets_backend" id="extended_assets_backend">
+            <xpath expr="//script[@src='/web/static/src/js/views/list_view.js']"
+                   position="replace">
+                <script type="text/javascript"
+                        src="/list_view_limit_options/static/src/js/views/list_view.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
