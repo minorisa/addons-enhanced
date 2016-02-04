@@ -7,7 +7,7 @@ python:
   - "2.7"
 
 env:
-  - VERSION="9.0" ODOO_REPO="odoo/odoo" LINT_CHECK="1" UNIT_TEST="0"
+  - VERSION="9.0" ODOO_REPO="odoo/odoo" LINT_CHECK="1" TEST="1" INCLUDE="purchase_request"
 
 addons:
   apt:
