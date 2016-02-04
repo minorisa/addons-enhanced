@@ -24,6 +24,7 @@ from openerp.tests.common import TransactionCase
 
 
 class TestPurchaseRequest(TransactionCase):
+
     def test_purchase_request_type(self):
         """ Testing Purchase Request Type creation... """
         prtobj = self.registry('purchase.request.type')
@@ -37,7 +38,7 @@ class TestPurchaseRequest(TransactionCase):
         prtobj = self.registry('purchase.request.type')
         prlobj = self.registry('purchase.request.line')
         mcmobj = self.registry('mail.compose.message')
-        # poobj = self.registry('purchase.order')
+        poobj = self.registry('purchase.order')
         cr = self.cr
         uid = self.uid
 
@@ -116,8 +117,9 @@ class TestPurchaseRequest(TransactionCase):
         self.assertEqual(pr.state,
                          'po_created',
                          "Error setting state to 'po_created'.")
-        # po = poobj.browse(cr, uid, [poid])
-        # po.unlink()
-        # self.assertEqual(pr.state,
-        #                  'approved',
-        #                  "Purchase Request state should be 'approved'")
+        po = poobj.browse(cr, uid, [poid])
+        po.button_cancel()
+        po.unlink()
+        self.assertEqual(pr.state,
+                         'approved',
+                         "Purchase Request state should be 'approved'")
