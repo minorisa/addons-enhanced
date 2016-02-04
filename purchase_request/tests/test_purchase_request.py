@@ -37,7 +37,7 @@ class TestPurchaseRequest(TransactionCase):
         prtobj = self.registry('purchase.request.type')
         prlobj = self.registry('purchase.request.line')
         mcmobj = self.registry('mail.compose.message')
-        poobj = self.registry('purchase.order')
+        # poobj = self.registry('purchase.order')
         cr = self.cr
         uid = self.uid
 
@@ -88,12 +88,13 @@ class TestPurchaseRequest(TransactionCase):
                          'Error computing request total amount.')
 
         # Send purchase_request and check if state is correct
-        context = {}
-        context['default_composition_mode'] = 'comment'
-        context['default_use_template'] = False
-        context['default_model'] = 'purchase.request'
-        context['mark_so_as_sent'] = True
-        context['default_res_id'] = pr.id
+        context = {
+            'default_composition_mode': 'comment',
+            'default_use_template': False,
+            'default_model': 'purchase.request',
+            'mark_so_as_sent': True,
+            'default_res_id': pr.id,
+        }
         idmcm = mcmobj.create(cr, uid, {
             'subject': 'Hola',
             'body': 'Hola',
@@ -115,7 +116,7 @@ class TestPurchaseRequest(TransactionCase):
         self.assertEqual(pr.state,
                          'po_created',
                          "Error setting state to 'po_created'.")
-        po = poobj.browse(cr, uid, [poid])
+        # po = poobj.browse(cr, uid, [poid])
         # po.unlink()
         # self.assertEqual(pr.state,
         #                  'approved',
