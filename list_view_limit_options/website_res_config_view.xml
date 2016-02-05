@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf8"?>
+<openerp>
+    <data>
+        <record id="view_website_config_settings_inherit" model="ir.ui.view">
+            <field name="name">Website settings extended</field>
+            <field name="model">website.config.settings</field>
+            <field name="inherit_id" ref="website.view_website_config_settings"/>
+            <field name="priority" eval="19"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/div" position="inside">
+                    <group string="List View Limit Options">
+                        <label for="default_limit_stops"/>
+                        <div name="limit_stops">
+                            <div class="oe_inline">
+                                <field name="default_limit_stops" placeholder="Integer values separated by commas"/>
+                            </div>
+                        </div>
+                        <label for="default_hide_unlimited"/>
+                        <div name="hide_unlimited">
+                            <div class="oe_inline">
+                                <field name="default_hide_unlimited" help="True or False"/>
+                            </div>
+                        </div>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
