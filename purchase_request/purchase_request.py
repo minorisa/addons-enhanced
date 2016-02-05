@@ -112,11 +112,11 @@ class PurchaseRequest(models.Model):
                                   default=lambda s: s.env.user,
                                   states=READONLY_STATES)
     is_employee = fields.Boolean(string="Is Employee Responsible",
-                                 compute='_is_employee', store=True)
+                                 compute='_is_employee')
     validator_id = fields.Many2one(
         'res.users', string="Validated by", copy=False)
     is_validator = fields.Boolean(string="Is Validator Responsible",
-                                  compute='_is_validator', store=True)
+                                  compute='_is_validator')
     notes = fields.Text('Terms and Conditions')
     request_type = fields.Many2one('purchase.request.type',
                                    string="Purchase Request Type",
